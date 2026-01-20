@@ -3,7 +3,6 @@ version: "3.8"
 services:
   postgres:
     image: postgres:15
-    container_name: postgres_gateway
     environment:
       POSTGRES_USER: gateway_user
       POSTGRES_PASSWORD: gateway_pass
@@ -23,7 +22,6 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: redis_gateway
     ports:
       - "6379:6379"
     healthcheck:
@@ -36,7 +34,6 @@ services:
 
   api:
     build: ./backend
-    container_name: gateway_api
     ports:
       - "8000:8000"
     environment:
@@ -59,7 +56,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.worker
-    container_name: gateway_worker
     environment:
       DATABASE_URL: postgresql://gateway_user:gateway_pass@postgres:5432/payment_gateway
       REDIS_URL: redis://redis:6379
@@ -73,7 +69,6 @@ services:
 
   dashboard:
     build: ./frontend
-    container_name: gateway_dashboard
     ports:
       - "3000:3000"
     environment:
@@ -85,7 +80,6 @@ services:
 
   checkout:
     build: ./checkout-page
-    container_name: gateway_checkout
     ports:
       - "3001:3000"
     environment:
